@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 
@@ -15,9 +16,10 @@ mongoose.connect(
  }
  );
 
+ app.use(cors())
 
  //Midleware
- app.use((req, res) => {
+ app.use((req, res, next) => {
      req.io = io;
 
      return next()
@@ -25,6 +27,6 @@ mongoose.connect(
 
  app.use(require('./routes/routes'))
 
-app.listen(3000, () => {
+server.listen(3000, () => {
     console.log('Serivodr rodando na porta 3000');
 });
