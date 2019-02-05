@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 
 const app = express();
 
+const server = require('http').Server(app);// Pegar o servidor
+const io = require('socket.io')(server); //Fazer o server ouvir requisições socket
+
 app.use(express.json())
 
 mongoose.connect(
@@ -11,6 +14,14 @@ mongoose.connect(
       useNewUrlParser: true
  }
  );
+
+
+ //Midleware
+ app.use((req, res) => {
+     req.io = io;
+
+     return next()
+ });
 
  app.use(require('./routes/routes'))
 
